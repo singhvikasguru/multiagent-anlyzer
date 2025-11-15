@@ -646,7 +646,7 @@ def main():
     initialize_session_state()
     
     # Header
-    st.title("🤖 Multi-Agent CSV Analysis System")
+    st.title("🤖 Multi-Agent Task Solver System")
     st.markdown("**Enhanced Visibility Edition** - *Real-time agent monitoring with live progress tracking*")
     
     # Check if agent system is available
