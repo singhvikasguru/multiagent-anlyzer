@@ -202,7 +202,7 @@ This system was built as part of a **Multi-Agent Task Solver Challenge** complet
 - **Tool Usage**: Python code executor, CSV analyzer, image management, validation tools
 
 **✅ Stretch Goals Implemented:**
-- **Live Conversation Mode**: Real-time chat interface with agent monitoring
+- **Live Conversation Mode**: not yet done
 - **Multi-turn Refinement**: Context-aware follow-up question handling
 
 ### ⚖️ Key Design Tradeoffs
