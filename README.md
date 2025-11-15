@@ -183,6 +183,126 @@ DEBUG = True
 - Generated code is validated before execution
 - Session isolation prevents cross-contamination
 
+## ⚖️ Design Tradeoffs & 24-Hour Challenge Decisions
+
+This system was built as part of a **Multi-Agent Task Solver Challenge** completed within 24 hours. Several design tradeoffs were made to balance functionality, reliability, and time constraints.
+
+### 🎯 Challenge Requirements Addressed
+
+**✅ Core Requirements Met:**
+1. **Input**: Natural language business requests → ✅ Fully implemented with clarification flow
+2. **Planning**: Intelligent task decomposition → ✅ Task Planner Agent with O3 optimization
+3. **Execution**: Specialized agents with tool usage → ✅ 4-agent architecture with 6+ tools
+4. **Aggregation**: Structured final results → ✅ Executive Summary Agent with comprehensive reporting
+5. **Visibility**: Real-time progress tracking → ✅ Enhanced Streamlit UI with live monitoring
+
+**✅ High-Mark Features Achieved:**
+- **Clarification Questions**: Intelligent ambiguity detection and user interaction
+- **Context Sharing**: Previous analysis integration for follow-up questions
+- **Tool Usage**: Python code executor, CSV analyzer, image management, validation tools
+
+**✅ Stretch Goals Implemented:**
+- **Live Conversation Mode**: Real-time chat interface with agent monitoring
+- **Multi-turn Refinement**: Context-aware follow-up question handling
+
+### ⚖️ Key Design Tradeoffs
+
+#### 1. **Agent Specialization vs. Generalization**
+**Decision**: Highly specialized agents (Clarification → Planning → Analysis → Summary)
+- **✅ Pros**: Clear responsibilities, easier debugging, focused expertise
+- **⚠️ Cons**: More complex orchestration, potential over-engineering for simple tasks
+- **Rationale**: Better for complex business analysis, clearer visibility, scalable architecture
+
+#### 2. **OpenAI O3 Model Choice**
+**Decision**: Use O3 for all agents instead of mixing models
+- **✅ Pros**: Advanced reasoning, handles complex multi-step analysis, consistent performance
+- **⚠️ Cons**: Higher API costs, potential overkill for simple tasks, single point of failure
+- **Rationale**: 24-hour constraint required reliable, capable model; O3's reasoning reduces need for complex prompt engineering
+
+#### 3. **Task Planning Strategy**
+**Decision**: Bias toward single comprehensive task vs. micro-task decomposition
+- **✅ Pros**: Leverages O3's multi-step capabilities, reduces coordination overhead, faster execution
+- **⚠️ Cons**: Less granular visibility, harder to parallelize, potential single-task failures
+- **Rationale**: O3 can handle complex workflows internally; over-decomposition wastes time and tokens
+
+#### 4. **Code Execution Approach**
+**Decision**: Generate + validate + execute Python code vs. using pre-built analytics
+- **✅ Pros**: Unlimited flexibility, generates reusable code, full customization
+- **⚠️ Cons**: Security risks, execution failures, complexity over simple analytics
+- **Rationale**: Business requirements often need custom analysis; code generation provides audit trail
+
+#### 5. **Session Management**
+**Decision**: UUID-based session isolation with persistent image folders
+- **✅ Pros**: Clean separation, organized outputs, scalable for multiple users
+- **⚠️ Cons**: File system clutter, cleanup complexity, storage overhead
+- **Rationale**: Professional requirement for organized deliverables; essential for business use
+
+#### 6. **Context Tracking Implementation**
+**Decision**: Simple previous-question + previous-summary context vs. full conversation history
+- **✅ Pros**: Efficient, focused context, prevents token bloat, fast implementation
+- **⚠️ Cons**: Limited conversation depth, loses nuanced history, may miss distant references
+- **Rationale**: 24-hour constraint; most follow-ups reference immediate previous analysis
+
+#### 7. **Error Handling Strategy**
+**Decision**: Multi-layer error handling with graceful degradation
+- **✅ Pros**: Robust system, good user experience, debugging information
+- **⚠️ Cons**: Added complexity, potential masking of underlying issues
+- **Rationale**: Business-critical system needs reliability; users shouldn't see raw errors
+
+### 🚧 Known Limitations & Future Improvements
+
+#### Current Limitations:
+1. **Context Depth**: Only tracks last analysis, not full conversation thread
+2. **Parallel Execution**: Sequential agent execution, no parallelization
+3. **Code Security**: Basic sandboxing, not enterprise-grade isolation
+4. **Model Dependency**: Heavy reliance on O3 availability and performance
+5. **File Management**: No automatic cleanup of old session folders
+6. **Error Recovery**: Limited ability to retry failed analyses with modifications
+
+#### If Given More Time (Future Roadmap):
+1. **Enhanced Context**: Full conversation memory with semantic search
+2. **Parallel Processing**: Concurrent agent execution for independent tasks
+3. **Model Diversity**: Specialized models for different agent types (cost optimization)
+4. **Advanced Security**: Docker-based code execution, resource limits
+5. **Caching Layer**: Cache common analyses, CSV insights, model responses
+6. **User Management**: Multi-user support, permissions, analysis sharing
+7. **API Integration**: Connect to business systems (databases, APIs, file storage)
+8. **Template Library**: Pre-built analysis templates for common business questions
+
+### 📊 Performance Considerations
+
+#### Time Complexity Tradeoffs:
+- **Sequential Processing**: Chose reliability over speed
+- **O3 Model**: Slower but more accurate than lighter models
+- **Code Generation**: Time-intensive but provides flexibility
+- **Real-time UI**: Added latency for better user experience
+
+#### Cost Considerations:
+- **O3 Usage**: Higher token costs but reduced retry attempts
+- **Context Passing**: Efficient context vs. full history replay
+- **Tool Efficiency**: Minimal CSV re-reads, cached data structures
+
+### 🎯 Challenge Success Criteria Met
+
+**✅ Core Functionality**: All requirements implemented and working
+**✅ Agent Specialization**: Clear roles, specialized prompts, context sharing
+**✅ Orchestration Logic**: Avoids hallucination through validation, structured outputs
+**✅ Ambiguity Handling**: Intelligent clarification system
+**✅ Live Conversation**: Real-time chat with mid-execution visibility
+**✅ Multi-turn Refinement**: Context-aware follow-up handling
+
+### 🏆 24-Hour Achievement Summary
+
+Despite time constraints, the system achieved:
+- **4 Specialized Agents** with clear responsibilities
+- **6+ Custom Tools** for comprehensive data analysis  
+- **Real-time Visibility** with live progress tracking
+- **Context-Aware Follow-ups** for conversational experience
+- **Executive-Ready Outputs** with professional reporting
+- **Robust Error Handling** for production readiness
+
+The tradeoffs made prioritized **functionality over perfection**, **reliability over optimization**, and **user experience over technical elegance** - appropriate choices for a time-constrained challenge focused on demonstrating core capabilities.
+
 ## 📈 Performance Tips
 
 - **Large datasets**: Consider sampling for initial analysis
