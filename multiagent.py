@@ -20,7 +20,9 @@ from datetime import datetime
 
 # Apply nest_asyncio to allow nested event loops
 nest_asyncio.apply()
-# os.environ["OPENAI_API_KEY"] = "..."
+# os.environ[""] = "..."
+import os
+
 
 # NOTE: SESSION_ID will be generated per analysis run (not globally)
 # This ensures each question gets unique images in separate folders
